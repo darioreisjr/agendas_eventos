@@ -1,0 +1,79 @@
+/* Estilo geral para o corpo da página */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f4f4f9;
+  color: #333;
+}
+
+/* Container principal da aplicação */
+.App {
+  text-align: center;
+}
+
+/* Cabeçalho da aplicação */
+.App-header {
+  background-color: #282c34;
+  padding: 20px;
+  color: white;
+  margin-bottom: 30px;
+}
+
+/* Container para os cards da agenda */
+.container {
+  padding: 0 20px;
+  display: flex; /* Usa flexbox para alinhar os itens */
+  flex-wrap: wrap; /* Permite que os itens quebrem para a próxima linha */
+  justify-content: center; /* Centraliza os cards no container */
+  gap: 20px; /* Adiciona um espaço de 20px entre os cards */
+}
+
+/* Estilo de cada card de evento */
+.item-card {
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px; /* Bordas arredondadas */
+  padding: 20px;
+  width: 280px; /* Largura fixa para cada card */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+  transition: transform 0.2s; /* Animação suave no hover */
+  text-align: left; /* Alinha o texto à esquerda dentro do card */
+}
+
+/* Efeito de levantar o card ao passar o mouse */
+.item-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Estilo para o título (data) dentro do card */
+.item-card h3 {
+  margin-top: 0;
+  color: #0056b3;
+}
+
+/* Estilo para os parágrafos dentro do card */
+.item-card p {
+  margin: 8px 0;
+}
+
+/* Estilo para o link dentro do card */
+.item-card a {
+  display: inline-block;
+  margin-top: 15px;
+  text-decoration: none;
+  color: #fff;
+  background-color: #007bff;
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  transition: background-color 0.2s;
+}
+
+/* Efeito no link ao passar o mouse */
+.item-card a:hover {
+  background-color: #0056b3;
+}
