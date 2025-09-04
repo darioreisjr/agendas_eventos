@@ -187,7 +187,7 @@ Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para de
 
 ## 👥 Autores
 
-- **Seu Nome** - *Desenvolvedor Principal* - [@darioreisjr](https://github.com/darioreisjr)
+- **Dario Reis** - *Desenvolvedor Front-end* - [@darioreisjr](https://github.com/darioreisjr)
 
 ## 🙏 Agradecimentos
 
