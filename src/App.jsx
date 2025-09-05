@@ -8,6 +8,8 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('eventos');
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const GOOGLE_SHEET_URL = import.meta.env.VITE_GOOGLE_SHEET_URL;
 
@@ -52,6 +54,15 @@ function App() {
       element.scrollIntoView({ behavior: 'smooth' });
       setActiveSection(sectionId);
     }
+    setIsMobileMenuOpen(false);
+  };
+
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
   };
 
   useEffect(() => {
@@ -76,6 +87,13 @@ function App() {
     return () => observer.disconnect();
   }, []);
 
+  const navigationItems = [
+    { id: 'home', label: 'Início', icon: '🏠' },
+    { id: 'eventos', label: 'Eventos', icon: '🎉' },
+    { id: 'sobre', label: 'Sobre', icon: 'ℹ️' },
+    { id: 'contato', label: 'Contato', icon: '📞' }
+  ];
+
   return (
     <div className="App">
       {/* Header com Navegação */}
@@ -85,40 +103,18 @@ function App() {
             <h1>EventFlow</h1>
             <span>Eventos em fluxo contínuo</span>
           </div>
-          <nav className="main-nav">
+          <nav className="main-nav desktop-nav">
             <ul>
-              <li>
-                <button 
-                  className={activeSection === 'home' ? 'active' : ''}
-                  onClick={() => scrollToSection('home')}
-                >
-                  Início
-                </button>
-              </li>
-              <li>
-                <button 
-                  className={activeSection === 'eventos' ? 'active' : ''}
-                  onClick={() => scrollToSection('eventos')}
-                >
-                  Eventos
-                </button>
-              </li>
-              <li>
-                <button 
-                  className={activeSection === 'sobre' ? 'active' : ''}
-                  onClick={() => scrollToSection('sobre')}
-                >
-                  Sobre
-                </button>
-              </li>
-              <li>
-                <button 
-                  className={activeSection === 'contato' ? 'active' : ''}
-                  onClick={() => scrollToSection('contato')}
-                >
-                  Contato
-                </button>
-              </li>
+              {navigationItems.map(item => (
+                <li key={item.id}>
+                  <button 
+                    className={activeSection === item.id ? 'active' : ''}
+                    onClick={() => scrollToSection(item.id)}
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
             </ul>
           </nav>
           <button className="theme-toggle" onClick={toggleTheme} aria-label="Alternar tema">
@@ -126,6 +122,58 @@ function App() {
           </button>
         </div>
       </header>
+
+      {/* Sidebar para Tablet */}
+      <aside className={`sidebar ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
+        <button className="sidebar-toggle" onClick={toggleSidebar} aria-label="Alternar menu">
+          ☰
+        </button>
+        <nav className="sidebar-nav">
+          {navigationItems.map(item => (
+            <button
+              key={item.id}
+              className={`sidebar-item ${activeSection === item.id ? 'active' : ''}`}
+              onClick={() => scrollToSection(item.id)}
+              aria-label={item.label}
+            >
+              <span className="sidebar-icon">{item.icon}</span>
+              <span className="sidebar-label">{item.label}</span>
+            </button>
+          ))}
+        </nav>
+      </aside>
+
+      {/* FAB para Mobile */}
+      <button className="mobile-fab" onClick={toggleMobileMenu} aria-label="Menu">
+        ☰
+      </button>
+
+      {/* Menu Mobile Sheet */}
+      {isMobileMenuOpen && (
+        <>
+          <div className="mobile-overlay" onClick={toggleMobileMenu}></div>
+          <div className="mobile-sheet">
+            <div className="mobile-sheet-header">
+              <h3>Menu</h3>
+              <button className="mobile-close" onClick={toggleMobileMenu} aria-label="Fechar menu">
+                ✕
+              </button>
+            </div>
+            <nav className="mobile-nav">
+              {navigationItems.map(item => (
+                <button
+                  key={item.id}
+                  className={`mobile-nav-item ${activeSection === item.id ? 'active' : ''}`}
+                  onClick={() => scrollToSection(item.id)}
+                >
+                  <span className="mobile-icon">{item.icon}</span>
+                  <span>{item.label}</span>
+                </button>
+              ))}
+            </nav>
+          </div>
+        </>
+      )}
 
       {/* Seção Hero */}
       <section id="home" className="hero-section animate-section">
