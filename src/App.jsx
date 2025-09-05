@@ -1,5 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import Papa from 'papaparse';
+import { useForm } from 'react-hook-form';
+import { 
+  Sun, 
+  Moon, 
+  Home, 
+  PartyPopper, 
+  Info, 
+  Phone, 
+  Calendar, 
+  Clock, 
+  CalendarDays,
+  ArrowRight,
+  ArrowUpRight,
+  Target,
+  Zap,
+  Globe,
+  Handshake,
+  Mail,
+  MessageCircle,
+  MapPin,
+  Briefcase,
+  Camera,
+  Twitter,
+  Menu
+} from 'lucide-react';
 import './App.css';
 import BgEventos from '../public/eventos.png'
 
@@ -10,6 +35,8 @@ function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const { register, handleSubmit, formState: { errors }, reset } = useForm();
 
   const GOOGLE_SHEET_URL = import.meta.env.VITE_GOOGLE_SHEET_URL;
 
@@ -65,6 +92,13 @@ function App() {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
+  const onSubmit = (data) => {
+    console.log('Formulário enviado:', data);
+    // Aqui você pode adicionar a lógica de envio do formulário
+    alert('Mensagem enviada com sucesso!');
+    reset();
+  };
+
   useEffect(() => {
     const observerOptions = {
       threshold: 0.3,
@@ -88,10 +122,10 @@ function App() {
   }, []);
 
   const navigationItems = [
-    { id: 'home', label: 'Início', icon: '🏠' },
-    { id: 'eventos', label: 'Eventos', icon: '🎉' },
-    { id: 'sobre', label: 'Sobre', icon: 'ℹ️' },
-    { id: 'contato', label: 'Contato', icon: '📞' }
+    { id: 'home', label: 'Início', icon: Home },
+    { id: 'eventos', label: 'Eventos', icon: PartyPopper },
+    { id: 'sobre', label: 'Sobre', icon: Info },
+    { id: 'contato', label: 'Contato', icon: Phone }
   ];
 
   return (
@@ -118,7 +152,7 @@ function App() {
             </ul>
           </nav>
           <button className="theme-toggle" onClick={toggleTheme} aria-label="Alternar tema">
-            {isDarkMode ? '☀️' : '🌙'}
+            {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
           </button>
         </div>
       </header>
@@ -126,26 +160,31 @@ function App() {
       {/* Sidebar para Tablet */}
       <aside className={`sidebar ${isSidebarOpen ? 'sidebar-open' : 'sidebar-closed'}`}>
         <button className="sidebar-toggle" onClick={toggleSidebar} aria-label="Alternar menu">
-          ☰
+          <Menu size={24} />
         </button>
         <nav className="sidebar-nav">
-          {navigationItems.map(item => (
-            <button
-              key={item.id}
-              className={`sidebar-item ${activeSection === item.id ? 'active' : ''}`}
-              onClick={() => scrollToSection(item.id)}
-              aria-label={item.label}
-            >
-              <span className="sidebar-icon">{item.icon}</span>
-              <span className="sidebar-label">{item.label}</span>
-            </button>
-          ))}
+          {navigationItems.map(item => {
+            const IconComponent = item.icon;
+            return (
+              <button
+                key={item.id}
+                className={`sidebar-item ${activeSection === item.id ? 'active' : ''}`}
+                onClick={() => scrollToSection(item.id)}
+                aria-label={item.label}
+              >
+                <span className="sidebar-icon">
+                  <IconComponent size={20} />
+                </span>
+                <span className="sidebar-label">{item.label}</span>
+              </button>
+            );
+          })}
         </nav>
       </aside>
 
       {/* FAB para Mobile */}
       <button className="mobile-fab" onClick={toggleMobileMenu} aria-label="Menu">
-        ☰
+        <Menu size={24} />
       </button>
 
       {/* Menu Mobile Sheet */}
@@ -160,16 +199,21 @@ function App() {
               </button>
             </div>
             <nav className="mobile-nav">
-              {navigationItems.map(item => (
-                <button
-                  key={item.id}
-                  className={`mobile-nav-item ${activeSection === item.id ? 'active' : ''}`}
-                  onClick={() => scrollToSection(item.id)}
-                >
-                  <span className="mobile-icon">{item.icon}</span>
-                  <span>{item.label}</span>
-                </button>
-              ))}
+              {navigationItems.map(item => {
+                const IconComponent = item.icon;
+                return (
+                  <button
+                    key={item.id}
+                    className={`mobile-nav-item ${activeSection === item.id ? 'active' : ''}`}
+                    onClick={() => scrollToSection(item.id)}
+                  >
+                    <span className="mobile-icon">
+                      <IconComponent size={20} />
+                    </span>
+                    <span>{item.label}</span>
+                  </button>
+                );
+              })}
             </nav>
           </div>
         </>
@@ -204,7 +248,9 @@ function App() {
             onClick={() => scrollToSection('eventos')}
           >
             Explorar Eventos
-            <span className="button-arrow">→</span>
+            <span className="button-arrow">
+              <ArrowRight size={16} />
+            </span>
           </button>
         </div>
       </section>
@@ -242,15 +288,21 @@ function App() {
                       <h3>{item['Nome do evento']}</h3>
                       <div className="event-info">
                         <div className="info-item">
-                          <span className="icon">📅</span>
+                          <span className="icon">
+                            <Calendar size={16} />
+                          </span>
                           <span>{item['Data do evento']}</span>
                         </div>
                         <div className="info-item">
-                          <span className="icon">⏰</span>
+                          <span className="icon">
+                            <Clock size={16} />
+                          </span>
                           <span>{item['Horario do evento']}</span>
                         </div>
                         <div className="info-item">
-                          <span className="icon">🗓️</span>
+                          <span className="icon">
+                            <CalendarDays size={16} />
+                          </span>
                           <span>{item['Dia da Semana']}</span>
                         </div>
                       </div>
@@ -261,14 +313,18 @@ function App() {
                         className="event-link"
                       >
                         Participar
-                        <span className="link-arrow">↗</span>
+                        <span className="link-arrow">
+                          <ArrowUpRight size={16} />
+                        </span>
                       </a>
                     </div>
                   </div>
                 ))
               ) : (
                 <div className="no-events">
-                  <div className="empty-icon">📅</div>
+                  <div className="empty-icon">
+                    <Calendar size={48} />
+                  </div>
                   <h3>Nenhum evento no momento</h3>
                   <p>Estamos preparando eventos incríveis para você. Volte em breve!</p>
                 </div>
@@ -302,22 +358,30 @@ function App() {
 
               <div className="features">
                 <div className="feature">
-                  <div className="feature-icon">🎯</div>
+                  <div className="feature-icon">
+                    <Target size={40} />
+                  </div>
                   <h4>Curadoria Especializada</h4>
                   <p>Cada evento passa por um processo rigoroso de seleção, garantindo qualidade e relevância para nossa comunidade.</p>
                 </div>
                 <div className="feature">
-                  <div className="feature-icon">⚡</div>
+                  <div className="feature-icon">
+                    <Zap size={40} />
+                  </div>
                   <h4>Atualização em Tempo Real</h4>
                   <p>Nossa plataforma é sincronizada automaticamente, garantindo que você sempre tenha acesso às informações mais recentes.</p>
                 </div>
                 <div className="feature">
-                  <div className="feature-icon">🌐</div>
+                  <div className="feature-icon">
+                    <Globe size={40} />
+                  </div>
                   <h4>Diversidade de Categorias</h4>
                   <p>De tecnologia a arte, de negócios a entretenimento. Temos eventos para todos os interesses e momentos da vida.</p>
                 </div>
                 <div className="feature">
-                  <div className="feature-icon">🤝</div>
+                  <div className="feature-icon">
+                    <Handshake size={40} />
+                  </div>
                   <h4>Comunidade Ativa</h4>
                   <p>Conecte-se com pessoas que compartilham seus interesses e construa uma rede de contatos valiosa.</p>
                 </div>
@@ -339,7 +403,9 @@ function App() {
             <div className="contato-grid">
               <div className="contato-info">
                 <div className="contato-item">
-                  <div className="contato-icon">📧</div>
+                  <div className="contato-icon">
+                    <Mail size={24} />
+                  </div>
                   <div className="contato-details">
                     <h4>Email</h4>
                     <p>contato@eventflow.com</p>
@@ -347,7 +413,9 @@ function App() {
                   </div>
                 </div>
                 <div className="contato-item">
-                  <div className="contato-icon">💬</div>
+                  <div className="contato-icon">
+                    <MessageCircle size={24} />
+                  </div>
                   <div className="contato-details">
                     <h4>WhatsApp</h4>
                     <p>(11) 99999-9999</p>
@@ -355,7 +423,9 @@ function App() {
                   </div>
                 </div>
                 <div className="contato-item">
-                  <div className="contato-icon">📍</div>
+                  <div className="contato-icon">
+                    <MapPin size={24} />
+                  </div>
                   <div className="contato-details">
                     <h4>Localização</h4>
                     <p>São Paulo, SP - Brasil</p>
@@ -366,16 +436,80 @@ function App() {
               
               <div className="contato-form">
                 <h3>Envie sua mensagem</h3>
-                <form className="contact-form">
+                <form className="contact-form" onSubmit={handleSubmit(onSubmit)}>
                   <div className="form-group">
-                    <input type="text" placeholder="Seu nome" required />
-                    <input type="email" placeholder="Seu email" required />
+                    <div>
+                      <input 
+                        type="text" 
+                        placeholder="Seu nome" 
+                        {...register("nome", {
+                          required: "Nome é obrigatório",
+                          minLength: { value: 2, message: "Nome deve ter pelo menos 2 caracteres" }
+                        })}
+                        style={{ borderColor: errors.nome ? '#ef4444' : undefined }}
+                      />
+                      {errors.nome && (
+                        <span style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '0.25rem', display: 'block' }}>
+                          {errors.nome.message}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <input 
+                        type="email" 
+                        placeholder="Seu email" 
+                        {...register("email", {
+                          required: "Email é obrigatório",
+                          pattern: {
+                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                            message: "Email inválido"
+                          }
+                        })}
+                        style={{ borderColor: errors.email ? '#ef4444' : undefined }}
+                      />
+                      {errors.email && (
+                        <span style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '0.25rem', display: 'block' }}>
+                          {errors.email.message}
+                        </span>
+                      )}
+                    </div>
                   </div>
-                  <input type="text" placeholder="Assunto" required />
-                  <textarea placeholder="Sua mensagem..." rows="4" required></textarea>
+                  <div>
+                    <input 
+                      type="text" 
+                      placeholder="Assunto" 
+                      {...register("assunto", {
+                        required: "Assunto é obrigatório"
+                      })}
+                      style={{ borderColor: errors.assunto ? '#ef4444' : undefined }}
+                    />
+                    {errors.assunto && (
+                      <span style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '0.25rem', display: 'block' }}>
+                        {errors.assunto.message}
+                      </span>
+                    )}
+                  </div>
+                  <div>
+                    <textarea 
+                      placeholder="Sua mensagem..." 
+                      rows="4" 
+                      {...register("mensagem", {
+                        required: "Mensagem é obrigatória",
+                        minLength: { value: 10, message: "Mensagem deve ter pelo menos 10 caracteres" }
+                      })}
+                      style={{ borderColor: errors.mensagem ? '#ef4444' : undefined }}
+                    />
+                    {errors.mensagem && (
+                      <span style={{ color: '#ef4444', fontSize: '0.75rem', marginTop: '0.25rem', display: 'block' }}>
+                        {errors.mensagem.message}
+                      </span>
+                    )}
+                  </div>
                   <button type="submit" className="form-button">
                     Enviar Mensagem
-                    <span className="button-arrow">→</span>
+                    <span className="button-arrow">
+                      <ArrowRight size={16} />
+                    </span>
                   </button>
                 </form>
               </div>
@@ -395,9 +529,15 @@ function App() {
                 curadoria e uma experiência de usuário excepcional.
               </p>
               <div className="social-links">
-                <a href="#" aria-label="LinkedIn">💼</a>
-                <a href="#" aria-label="Instagram">📷</a>
-                <a href="#" aria-label="Twitter">🐦</a>
+                <a href="#" aria-label="LinkedIn">
+                  <Briefcase size={20} />
+                </a>
+                <a href="#" aria-label="Instagram">
+                  <Camera size={20} />
+                </a>
+                <a href="#" aria-label="Twitter">
+                  <Twitter size={20} />
+                </a>
               </div>
             </div>
             <div className="footer-section">
